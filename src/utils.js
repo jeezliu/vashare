@@ -1,26 +1,31 @@
-
-
-import { tsvParse, csvParse } from  "d3-dsv";
-import { timeParse } from "d3-time-format";
+import { tsvParse, csvParse } from 'd3-dsv'
+import { timeParse } from 'd3-time-format'
 
 function parseData(parse) {
-	return function(d) {
-		d.date = parse(d.date);
-		d.open = +d.open;
-		d.high = +d.high;
-		d.low = +d.low;
-		d.close = +d.close;
-		d.volume = +d.volume;
+  return function (d) {
+    d.date = parse(d.date)
+    d.open = +d.open
+    d.high = +d.high
+    d.low = +d.low
+    d.close = +d.close
+    d.volume = +d.volume
 
-		return d;
-	};
+    return d
+  }
 }
 
-const parseDate = timeParse("%Y-%m-%d");
+const parseDate = timeParse('%Y-%m-%d')
+
+// export function getData() {
+//   const promiseMSFT = fetch('//rrag.github.io/react-stockcharts/data/MSFT.tsv')
+//     .then(response => response.text())
+//     .then(data => tsvParse(data, parseData(parseDate)))
+//   return promiseMSFT
+// }
 
 export function getData() {
-	const promiseMSFT = fetch("//rrag.github.io/react-stockcharts/data/MSFT.tsv")
-		.then(response => response.text())
-		.then(data => tsvParse(data, parseData(parseDate)))
-	return promiseMSFT;
+  const promisePA = fetch('http://69.171.79.123:8899/k_data?code=601318')
+    .then(response => response.text())
+    .then(data => csvParse(data, parseData(parseDate)))
+  return promisePA
 }
